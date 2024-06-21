@@ -2,7 +2,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-exports.auth = (req,res, next) =>
+exports.auth = (req, res, next) =>
  {
     try{
         //extract JWT token from req to validate user 
@@ -16,7 +16,7 @@ exports.auth = (req,res, next) =>
             });
         }
 
-        //verify the tokin- is it valid or not 
+        //verifying the token -  is it valid or not 
         try
          {
           const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -24,6 +24,7 @@ exports.auth = (req,res, next) =>
           req.user = payload;
          } 
         
+
         catch(error) {
             return res.status(401).json({
                 success:false,
@@ -32,9 +33,11 @@ exports.auth = (req,res, next) =>
         }
 
 
+        console.log("user authenticated") ; 
+
+      //nest middleware or handler
         next();
     } 
-
 
     catch(error) {
         return res.status(401).json({

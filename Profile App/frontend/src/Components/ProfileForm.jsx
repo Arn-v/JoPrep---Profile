@@ -23,6 +23,8 @@ function ProfileForm(props)
         address: "" ,
     }); 
 
+
+
     function changeHandler(event)
     {
         setFormData((prevState) => {
@@ -34,49 +36,53 @@ function ProfileForm(props)
     }
 
 
+
+
+
+
     async function getUserData()
     {
-        try {
-            const userData = await fetch(
-                `http://localhost:5000/api/profile/`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+       axios.get('http://localhost:5000/api/profile')
+       .then( (res) => {
+           const responseUserData = res.data ; 
+           console.log(responseUserData) ; 
+        })
+        .catch( (error) => {
+            console.log(error) ; 
+        })
+    }
 
-            const res = await userData.json();
-            setFormData(res);
-        } 
-        catch (error) {
-            console.log(error);
-        }
-    };
+
+
+
 
     async function submitHandler(event)
     {
         event.preventDefault(); 
 
         try {
+
+            console.log(formData) ; 
             const savedUserData = await fetch(
-                `http://localhost:5000/api/profile/saveProfile`,
+                `http://localhost:5000/api/profile/save`,
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ ...formData }),
+                    body: JSON.stringify({ ...formData }) ,
                 }
             );
 
             console.log("FORM RESPONSE......", savedUserData);
         }
         catch (error) {
-            console.log(error); 
+            console.log(error);
+            console.error(error) 
         }
     }
+
+
 
     useEffect(() => {
         getUserData();
@@ -85,9 +91,25 @@ function ProfileForm(props)
     }, []); 
 
 
+
+
+
+
+
     function imgBtnHandler(event){
         event.preventDefault() ; 
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
     return (

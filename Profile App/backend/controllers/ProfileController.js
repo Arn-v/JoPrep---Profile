@@ -12,9 +12,9 @@ exports.getUserProfile = async(req,res) =>
 {
    try
     {
-     const { id } = req.body.profileData ;
+     const { id } = req.user ;
 
-     const userProfileData = await User.find( { id } ) ; 
+     const userProfileData = await User.findById( id ) ; 
 
      if(!userProfileData){
         return res.status(404).json({ success:false , 
@@ -59,7 +59,7 @@ exports.saveProfile = async(req,res) =>
   try
   {
     
-    const {id} = req.body.profileData ; 
+    // const {id} = req.body.profileData ; 
 
     const newProfileData = req.body.profileData ; 
 
@@ -69,11 +69,11 @@ exports.saveProfile = async(req,res) =>
     // VALIDATION LEFT 
 
 
-    const userProfile = await User.findById ( id ) ; 
+    const userProfile = await User.findOne( { email:email })
 
    if( userProfile )
      { 
-      const updatedProfile = await User.findByIdAndUpdate ( id , newProfileData , { new:true }) ; 
+      const updatedProfile = await User.findOneAndUpdate( {email:email}, newProfileData , { new:true }) ; 
 
       //successful response case
       res.status(200).json({ success:true, 
@@ -83,45 +83,59 @@ exports.saveProfile = async(req,res) =>
      }
 
 
+
+  // NEW USER
    else
    { 
 
       //create new entry for User
-       const user = await User.create( {
+       let user = await User.create( {
                                         firstName,lastName,email,address
                                         })
 
+        console.log(user) ; 
+
+        user = user.toObject(); 
+
         //now creating a JWT for AuthN 
         const payload = {
-            name:firstName, 
+            name:user.firstName, 
             email:user.email,
             id:user._id
-            };
+              };
 
-    const jwt = require("jsonwebtoken") ; 
 
-    let token =  jwt.sign(payload, 
-        process.env.JWT_SECRET,
-        {
-            expiresIn:"2h",
-        });
+      console.log("token created") ; 
 
-        
-    user = user.toObject();
-    user.token = token;
+      
+      
 
-    const options = {
-        expires: new Date( Date.now() + 3*24*60*60*1000),
-        httpOnly:true,
-    }
 
-   // creating a cookie & sending  in the response 
-   return res.cookie("token", token, options).status(200).json({
-    success: true,
-    token,
-    user,
-    message: 'User profile created successfully',
-    });
+
+      const jwt = require("jsonwebtoken") ; 
+
+      let token =  jwt.sign(payload, 
+          process.env.JWT_SECRET,
+          {
+              expiresIn:"2h",
+          });
+
+          
+      // user = user.toObject();
+      user.token = token;
+
+      const options = {
+          expires: new Date( Date.now() + 3*24*60*60*1000),
+          httpOnly:true,
+      }
+
+    // creating a cookie & sending  in the response 
+    return res.cookie("token", token, options).status(200).json({
+      success: true,
+      token,
+      user,
+      message: 'User profile created successfully',
+      });
 
   }
 
