@@ -27,7 +27,7 @@
 
 .navbar{
     width:100% ; 
-    height: 4.0625rem;
+    height: 4.0925rem;
     padding: 0.75rem 2.5rem;
     border-bottom: 1px solid #E5E8EB;
 
@@ -45,6 +45,9 @@
     font-weight: 700;
     line-height: 1.40625rem; /* 125% */
     letter-spacing: -0.01688rem;
+    height:1.5rem ; 
+
+    margin-bottom: 5px ;
 }
 
 .nav-links{
@@ -139,7 +142,9 @@
     flex-shrink: 0;
 
     border-radius: 0.75rem;
-   background: #E8EDF2;
+    background: #E8EDF2;
+
+    cursor: pointer;
 
     color: #0D141C;
     font-feature-settings: 'dlig' on;
@@ -151,6 +156,11 @@
 
     margin-top:0.5rem ;
     margin-bottom: 0.5rem ;
+
+    transition: all 0.2s ease;
+
+    position:relative ; 
+    left:2px ; 
 }
 
 .profile-photo-btn :nth-child(1){
@@ -159,7 +169,10 @@
 
 }
 
-.profile-photo-btn 
+.profile-photo-btn:hover { 
+    transform : scale(1.02) ; 
+
+}
 
 .profile-form-container{
     min-width: 50%;
@@ -304,7 +317,7 @@
 
 .save-btn:hover{
     transform: scale(1.05);
-    background: #1465B3;
+    background: #1879da;
     z-index:10 ; 
 
     overflow: visible;
@@ -317,9 +330,7 @@
 @media ( max-width:770px ){
     .btn-container{
         align-self: center ;
-
         margin-top:30px ; 
-
         justify-content: center ;
     }
 
@@ -343,6 +354,18 @@
     .profile-container{
         padding:1.4rem ; 
     }
+
+    .profile-form{
+        align-items : center ;
+        
+    }
+
+    .profile-photo-btn{
+        margin-bottom : 20px ; 
+        margin-top:10px ;
+    }
+
+
 
 
 
