@@ -1,20 +1,14 @@
 
-
-
 import React, { useEffect, useState } from 'react';
 import { CiCamera } from "react-icons/ci";
 import axios from "axios";
+import { toast } from 'react-toastify'; 
 
 
 function ProfileForm(props)
 {
 
-    const initialUserData = {  
-        firstName: "", 
-        lastName: "", 
-        email: "", 
-        address: "" ,
-    };
+
 
     const [formData, setFormData] = useState({  
         firstName: "", 
@@ -42,10 +36,28 @@ function ProfileForm(props)
 
     async function getUserData()
     {
-       axios.get('http://localhost:5000/api/profile')
+       console.log("Fetching user profile ") ; 
+       axios.get('/api/profile' , { withCredentials: true } ,  )
        .then( (res) => {
            const responseUserData = res.data ; 
            console.log(responseUserData) ; 
+           const { firstName , lastName , email , address} = responseUserData.data ; 
+
+          
+        //    console.log("RESPONSE DATA fields");
+        //    console.log( firstName,lastName,email,address ) ; 
+
+           setFormData({firstName,lastName,email,address})  ;
+
+
+        //    console.log("RESPONSE DATA");
+        //    console.log(responseUserData) ; 
+
+
+
+           console.log("FORM DATA");
+           console.log(formData) ; 
+
         })
         .catch( (error) => {
             console.log(error) ; 
@@ -63,19 +75,30 @@ function ProfileForm(props)
         try {
 
             console.log(formData) ; 
-            const savedUserData = await fetch(
-                `http://localhost:5000/api/profile/save`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ ...formData }) ,
-                }
-            );
 
-            console.log("FORM RESPONSE......", savedUserData);
+            const profileData = {...formData} ; 
+
+            // console.log("PROFILE DATA ") ;
+            // console.log(profileData) ; 
+
+            axios.post('/api/profile/save', {
+                profileData : formData 
+              } , {withCredentials:true})
+              .then(  (res) => 
+               {
+                console.log(res);
+                toast.success("Saved Successfully !");
+               })
+              .catch(  (error) =>  {
+                console.log(error);
+              });
+
+
+            
+
+             
         }
+
         catch (error) {
             console.log(error);
             console.error(error) 
@@ -86,10 +109,10 @@ function ProfileForm(props)
 
     useEffect(() => {
         getUserData();
+        setFormData(formData) ;
         return () => {
         }
-    }, []); 
-
+    } , [] ); 
 
 
 
@@ -98,6 +121,15 @@ function ProfileForm(props)
 
     function imgBtnHandler(event){
         event.preventDefault() ; 
+    }
+
+
+
+
+    function resetHandler ( event ) { 
+        event.preventDefault() ; 
+
+        getUserData(); 
     }
 
 
@@ -141,7 +173,7 @@ function ProfileForm(props)
                     </div>
                 </div>
                 <div className='btn-container'>
-                    <button className='reset-btn'>Reset</button>
+                    <button onClick={resetHandler} className='reset-btn'>Reset</button>
                     <button onClick={submitHandler} className='save-btn'>Save</button>
                 </div>
             </form>

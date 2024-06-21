@@ -3,12 +3,23 @@ const express = require("express") ;
 const app = express() ; 
 
 
+
+
 require("dotenv").config() ;
 const PORT = process.env.PORT || 8000 ; 
 
+
+
 app.use(express.json()) ; 
+
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
+
+const cors = require("cors") ; 
+app.use(cors()) ; 
+
+
+
 
 
 const profileRoutes = require("./routes/Profile") ; 

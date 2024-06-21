@@ -58,11 +58,6 @@
 
 
 
-
-.nav-bar:hover{
-   
-}
-
 .nav-title{
     color: #0D141C;
     font-feature-settings: 'dlig' on;
@@ -411,8 +406,24 @@
         margin-top:10px ;
     }
 
-
-
-
-
 }
+
+
+/* .toast {
+    overflow-y: hidden;
+} */
+
+:root {
+    --toastify-color-success: #1879da;
+}
+
+  
+  .Toastify__progress-bar--success {
+    background: #1976D2 !important; 
+  }
+  
+
+  .Toastify__toast--success svg {
+    fill: #1879da !important; 
+  }
+  
