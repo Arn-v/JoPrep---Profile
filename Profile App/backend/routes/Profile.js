@@ -5,7 +5,7 @@ const router = express.Router() ;
 
 
 router.get("/" , getUserProfile )  ; 
-router.post("/saveProfile" , saveProfile) ; 
+router.post("/save" , saveProfile) ; 
 
 
 module.exports = router ;  

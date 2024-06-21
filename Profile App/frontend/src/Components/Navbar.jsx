@@ -18,6 +18,7 @@ function Navbar( ) {
                   <NavLink className="nav-link" to="/events">Events</NavLink>
                   <NavLink className="nav-link" to="">Services</NavLink>
                   <NavLink className="nav-link" to="/support">Support</NavLink>
+                  <NavLink ><div className='nav-img-container'><img className='nav-img' src=""/></div></NavLink>
 
                   
 

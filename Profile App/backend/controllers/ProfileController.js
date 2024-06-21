@@ -12,7 +12,7 @@ exports.getUserProfile = async(req,res) =>
 {
    try
     {
-     const { id } = req.user ;
+     const { id } = req.body.profileData ;
 
      const userProfileData = await User.find( { id } ) ; 
 
@@ -38,7 +38,8 @@ exports.getUserProfile = async(req,res) =>
 
       res.status(500).json(
         { success:false , 
-          message:"Internal Server Error "
+          message:"Internal Server Error " ,
+          data: error 
         }
        )
     }
@@ -62,7 +63,7 @@ exports.saveProfile = async(req,res) =>
 
     const newProfileData = req.body.profileData ; 
 
-    const {firstName,lasttName, email, address} = req.body.profileData  ; 
+    const {firstName,lastName, email, address} = req.body.profileData  ; 
 
     
     // VALIDATION LEFT 
@@ -83,8 +84,7 @@ exports.saveProfile = async(req,res) =>
 
 
    else
-   {
-     const {firstName, lastName, email, address} = req.body.profileData  ; 
+   { 
 
       //create new entry for User
        const user = await User.create( {
@@ -135,7 +135,8 @@ exports.saveProfile = async(req,res) =>
 
        res.status(500).json(
          { success:false , 
-          message:"Internal Server Error "
+          message:"Internal Server Error " ,
+          data: error 
          })
     }
 

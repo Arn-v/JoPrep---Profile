@@ -7,6 +7,8 @@ require("dotenv").config() ;
 const PORT = process.env.PORT || 8000 ; 
 
 app.use(express.json()) ; 
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 
 const profileRoutes = require("./routes/Profile") ; 
@@ -21,6 +23,10 @@ app.listen( PORT , () => {
     console.log(`Server has started succesfully at ${PORT}`) ; 
 } )
 
+
+app.get('/' , (req,res)=>{
+    res.send(`<h1> HI , SERVER HERE </h1>`)
+})
 
 
 
